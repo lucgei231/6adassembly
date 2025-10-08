@@ -24,9 +24,34 @@
     .password-container {
       margin-top: 10px;
     }
+    #logoutBtn {
+      display: none;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #d9534f;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .remember-container {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .remember-container label {
+      margin-left: 5px;
+      font-size: 15px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
+
+  <button id="logoutBtn" onclick="logout()">Log Out</button>
 
   <div class="section">
     <h2>View Only</h2>
@@ -43,6 +68,10 @@
     </div>
     <div class="password-container" id="passwordPrompt" style="display:none;">
       <input type="password" id="passwordInput" placeholder="Enter password">
+      <div class="remember-container">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Remember Me</label>
+      </div>
       <button onclick="checkPassword()">Go</button>
     </div>
   </div>
@@ -50,17 +79,45 @@
   <script>
     let targetUrl = "";
 
+    // Check if rememberMe is set in localStorage and log out button needs to be shown
+    window.onload = function() {
+      if (localStorage.getItem('rememberMeJackG')) {
+        document.getElementById('logoutBtn').style.display = 'block';
+      }
+    };
+
     function showPasswordPrompt(url) {
       targetUrl = url;
+      // If rememberMe is in localStorage, bypass password
+      if (localStorage.getItem('rememberMeJackG')) {
+        window.location.href = targetUrl;
+        return;
+      }
       document.getElementById('passwordPrompt').style.display = 'block';
       document.getElementById('passwordInput').value = '';
+      document.getElementById('rememberMe').checked = false;
     }
 
     function checkPassword() {
       const password = document.getElementById('passwordInput').value;
+      const rememberMeChecked = document.getElementById('rememberMe').checked;
       if (password === "woman123") {
+        if (rememberMeChecked) {
+          localStorage.setItem('rememberMeJackG', 'true');
+          document.getElementById('logoutBtn').style.display = 'block';
+        }
         window.location.href = targetUrl;
       }
+    }
+
+    function logout() {
+      localStorage.removeItem('rememberMeJackG');
+      document.getElementById('logoutBtn').style.display = 'none';
+      // Optionally reset password prompt if visible
+      document.getElementById('passwordPrompt').style.display = 'none';
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('rememberMe').checked = false;
+      alert("You have been logged out. Remember Me is now off.");
     }
   </script>
 
