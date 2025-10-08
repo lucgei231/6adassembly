@@ -449,25 +449,57 @@
         el.classList.remove('typewriter-text');
       });
     }
-    // Forgot Password Modal logic (improved)
+    // Forgot Password Modal logic (with fallback if iframe fails)
     document.getElementById('forgotPasswordBtn').onclick = function() {
-      // Remove any previous iframe
       const container = document.getElementById('forgotPasswordIframeContainer');
       container.innerHTML = '';
-      // Create the iframe only when modal is shown
       const iframe = document.createElement('iframe');
       iframe.src = "https://lucgei231.github.io/6adassembly/forgotpassword.html";
       iframe.style.flex = "1";
       iframe.style.border = "none";
       iframe.style.width = "100%";
       iframe.style.height = "100%";
-      container.appendChild(iframe);
+      // Fallback HTML if iframe fails to load
+      iframe.onerror = function() {
+        container.innerHTML = `
+          <div style="padding:24px;">
+            <h1 class="fpstarter">Forgot Password?</h1>
+            <p>
+              If you are Jack M or Cody you can ask Lucas for a one-time password.<br>
+              If you are Jack G or Lizzy please ask Lucas for a permanent remember me password.<br>
+              <br>
+              If you are not these people then you know what to do.
+            </p>
+          </div>
+        `;
+      };
+      // Also fallback if iframe doesn't load after 2 seconds (network block)
+      let fallbackTimeout = setTimeout(() => {
+        if (!iframe.contentWindow || !iframe.contentDocument || iframe.contentDocument.body.innerHTML.trim() === "") {
+          container.innerHTML = `
+            <div style="padding:24px;">
+              <h1 class="fpstarter">Forgot Password?</h1>
+              <p>
+                If you are Jack M or Cody you can ask Lucas for a one-time password.<br>
+                If you are Jack G or Lizzy please ask Lucas for a permanent remember me password.<br>
+                <br>
+                If you are not these people then you know what to do.
+              </p>
+            </div>
+          `;
+        }
+      }, 2000);
 
+      iframe.onload = function() {
+        clearTimeout(fallbackTimeout);
+      };
+
+      container.appendChild(iframe);
       document.getElementById('forgotPasswordModal').style.display = 'flex';
     };
+
     document.getElementById('closeForgotPasswordBtn').onclick = function() {
       document.getElementById('forgotPasswordModal').style.display = 'none';
-      // Remove iframe to stop loading/network
       document.getElementById('forgotPasswordIframeContainer').innerHTML = '';
     };
     document.getElementById('forgotPasswordModal').onclick = function(e) {
