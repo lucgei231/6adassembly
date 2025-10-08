@@ -83,17 +83,20 @@
     }
     #settingsGrid {
       display: flex;
-      flex-direction: row;
+      flex-direction: column; /* Change to column for vertical scroll */
       flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: auto;      /* Enable vertical scroll */
+      overflow-x: hidden;    /* Disable horizontal scroll */
       height: 80vh;
+      max-height: 80vh;
+      width: 340px;
       padding: 24px 24px 16px 24px;
-      overscroll-behavior-x: contain;
-      overscroll-behavior-y: none;
+      overscroll-behavior-y: contain;
+      overscroll-behavior-x: none;
     }
     #settingsGrid::-webkit-scrollbar {
-      height: 16px;
+      width: 16px;
+      height: 0;
       background: #eee;
     }
     #settingsGrid::-webkit-scrollbar-thumb {
@@ -103,57 +106,26 @@
     .settingsColumn {
       display: flex;
       flex-direction: column;
-      margin-right: 32px;
+      margin-right: 0;
+      margin-bottom: 0;
     }
     .setting-row {
       min-width: 260px;
       max-width: 320px;
       margin-bottom: 12px;
     }
-    #closeSettingsBtn {
-      position: absolute;
-      top: 18px;
-      right: 32px;
-      margin: 0;
-      z-index: 10;
-    }
-    #settingsModal h3 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 22px;
-      color: #222;
-      position: sticky;
-      top: 0;
-      background: #fff;
-      z-index: 10;
-      padding-top: 4px;
-      padding-bottom: 4px;
-    }
-    .setting-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .setting-row label {
-      margin-left: 8px;
-      font-size: 16px;
-      color: #333;
-      flex: 1;
+    #settingsModal {
+      width: 370px;
+      max-width: 95vw;
+      left: auto;
+      right: 0;
+      border-radius: 0 0 0 12px;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.13);
+      animation: fadeIn 0.2s;
     }
     #closeSettingsBtn {
-      display: block;
-      margin: 0 auto;
-      background: #d9534f;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 7px 18px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 6px;
-      position: sticky;
-      bottom: 0;
-      z-index: 10;
+      right: 18px;
+      left: auto;
     }
     .bouncy {
       animation: bounce 0.4s;
@@ -452,17 +424,11 @@
       'mushroomMode','cornMode','pumpkinSpiceMode','gingerbreadMode','candyCaneMode','sundaeMode','bubbleTeaMode','ramenMode','sushiMode','bobaMode'
     ].forEach(s => { if (!funnySettings.includes(s)) funnySettings.push(s); });
 
-    // Dynamically render settings in columns (10 per column)
+    // Dynamically render settings in a single column for vertical scroll
     function renderSettingsGrid() {
       const grid = document.getElementById('settingsGrid');
       grid.innerHTML = '';
-      let col = null;
-      funnySettings.forEach((setting, i) => {
-        if (i % 10 === 0) {
-          col = document.createElement('div');
-          col.className = 'settingsColumn';
-          grid.appendChild(col);
-        }
+      funnySettings.forEach((setting) => {
         const row = document.createElement('div');
         row.className = 'setting-row';
         const input = document.createElement('input');
@@ -474,7 +440,7 @@
         label.textContent = setting.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase()).replace('Toggle','').replace('Mode',' Mode');
         row.appendChild(input);
         row.appendChild(label);
-        col.appendChild(row);
+        grid.appendChild(row);
       });
     }
     renderSettingsGrid();
@@ -499,14 +465,6 @@
       });
       document.getElementById('settingsModal').style.display = 'block';
     };
-
-    // Make scroll wheel scroll horizontally in settings modal
-    document.getElementById('settingsModal').addEventListener('wheel', function(e) {
-      if (e.target.closest('#settingsGrid')) {
-        e.preventDefault();
-        document.getElementById('settingsGrid').scrollLeft += e.deltaY;
-      }
-    }, { passive: false });
 
     // --- Setting Effects ---
   function applySetting(setting, enabled) {
