@@ -338,29 +338,7 @@
   <button id="settingsBtn" title="Funny Settings">⚙️</button>
   <div id="settingsModal">
     <h3>Funny Settings</h3>
-    <div class="setting-row"><input type="checkbox" id="comicSansifyToggle"><label for="comicSansifyToggle">Comic Sansify</label></div>
-    <div class="setting-row"><input type="checkbox" id="discoModeToggle"><label for="discoModeToggle">Disco Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="bouncyButtonsToggle"><label for="bouncyButtonsToggle">Bouncy Buttons</label></div>
-    <div class="setting-row"><input type="checkbox" id="applauseToggle"><label for="applauseToggle">Applause on Success</label></div>
-    <div class="setting-row"><input type="checkbox" id="pirateModeToggle"><label for="pirateModeToggle">Pirate Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="confettiToggle"><label for="confettiToggle">Celebrate Everything</label></div>
-    <div class="setting-row"><input type="checkbox" id="motivationToggle"><label for="motivationToggle">Show Motivational Quotes</label></div>
-    <div class="setting-row"><input type="checkbox" id="upsideDownToggle"><label for="upsideDownToggle">Upside Down Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="typewriterToggle"><label for="typewriterToggle">Typewriter Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="censoredToggle"><label for="censoredToggle">Censored Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="raveModeToggle"><label for="raveModeToggle">Rave Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="dramaticToggle"><label for="dramaticToggle">Dramatic Soundtrack</label></div>
-    <div class="setting-row"><input type="checkbox" id="emojiRainToggle"><label for="emojiRainToggle">Emoji Rain</label></div>
-    <div class="setting-row"><input type="checkbox" id="memeToggle"><label for="memeToggle">Meme Overlay</label></div>
-    <div class="setting-row"><input type="checkbox" id="rickrollToggle"><label for="rickrollToggle">Rickroll Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="mirrorToggle"><label for="mirrorToggle">Mirror Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="laserToggle"><label for="laserToggle">Laser Pointer Mode</label></div>
-    <div class="setting-row"><input type="checkbox" id="clownHornToggle"><label for="clownHornToggle">Clown Horn on Click</label></div>
-    <div class="setting-row"><input type="checkbox" id="surprisePopupToggle"><label for="surprisePopupToggle">Surprise Popups</label></div>
-    <div class="setting-row"><input type="checkbox" id="lowBatteryToggle"><label for="lowBatteryToggle">Low Battery Mode</label></div>
-  <div class="setting-row"><input type="checkbox" id="shakespeareToggle"><label for="shakespeareToggle">Shakespearean Mode</label></div>
-  <div class="setting-row"><input type="checkbox" id="poopModeToggle"><label for="poopModeToggle">Poop Mode</label></div>
-  <div class="setting-row"><input type="checkbox" id="fakeVirusToggle"><label for="fakeVirusToggle">Fake Virus Warning</label></div>
+    <div id="settingsGrid"></div>
     <button id="closeSettingsBtn">Close</button>
   </div>
   <audio id="applauseAudio" src="https://cdn.jsdelivr.net/gh/peachananr/applause@main/applause.mp3" preload="auto"></audio>
@@ -373,7 +351,16 @@
     const funnySettings = [
       'comicSansify','discoMode','bouncyButtons','applause','pirateMode','confetti','motivationalQuotes','upsideDownMode',
       'typewriter','censored','raveMode','dramatic','emojiRain','meme','rickroll','mirror','laser','clownHorn',
-      'surprisePopup','lowBattery','shakespeare','poopMode','fakeVirus'
+      'surprisePopup','lowBattery','shakespeare','poopMode','fakeVirus',
+      // 30 more settings below
+      'rainbowText','invertColors','giantCursor','tinyText','randomFont','blurMode','sepiaMode','snow','fireworks','catMode',
+      'dogMode','matrix','vaporwave','nyanCat','bananaMode','frogMode','beeMode','alienMode','ghostMode','skeletonMode',
+      'pumpkinMode','unicornMode','sharkMode','pizzaMode','burgerMode','donutMode','popcornMode','tacoMode','waffleMode','eggMode',
+      // 30 new settings from the ideas list
+      'rainbowBorders','upsideDownImages','pixelateMode','monochromeMode','synthwaveMode','jitterMode','bigEmojiCursor','randomSounds',
+      'invisibleButtons','dizzyMode','bubblePop','stickyNotes','dancingAnimals','confusedText','fakeBlueScreen','rain404','partyHatMode',
+      'morseCodeMode','oldTvMode','popcornPopping','randomFontSize','invisibleWalls','ghostCursor','slowMotion','speedUp','fakeUpdate',
+      'duckHunt','matrixCode','bubbleWrap','randomColorScheme'
     ];
     // Poop Mode emoji and image assets
     const poopEmojis = ["💩","🦨","🪠","🧻","🚽","🤢","🤮"];
@@ -876,6 +863,13 @@
         if (el.dataset.originalText) el.textContent = el.dataset.originalText;
         el.classList.remove('typewriter-text');
       });
+    }
+    // Ghost cursor move handler
+    function ghostCursorMove(e) {
+      if (window.ghostCursor) {
+        window.ghostCursor.style.left = (e.pageX + 24) + 'px';
+        window.ghostCursor.style.top = (e.pageY + 24) + 'px';
+      }
     }
   </script>
 </body>
