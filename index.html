@@ -48,7 +48,6 @@
       font-size: 15px;
       color: #333;
     }
-    /* Settings button styles */
     #settingsBtn {
       position: fixed;
       bottom: 20px;
@@ -78,12 +77,22 @@
       width: 340px;
       max-width: 95vw;
       animation: fadeIn 0.2s;
+      /* Enable scrolling for overflowing content */
+      max-height: 60vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
     #settingsModal h3 {
       margin-top: 0;
       margin-bottom: 16px;
       font-size: 22px;
       color: #222;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 10;
+      padding-top: 4px;
+      padding-bottom: 4px;
     }
     .setting-row {
       display: flex;
@@ -107,6 +116,9 @@
       font-size: 16px;
       cursor: pointer;
       margin-top: 6px;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
     }
     .bouncy {
       animation: bounce 0.4s;
@@ -228,12 +240,10 @@
       padding:8px 22px;
       cursor:pointer;
     }
-    /* Censored mode: blur effect */
     .censored {
       filter: blur(4px) brightness(0.8);
       transition: filter 0.3s;
     }
-    /* Typewriter effect (applies to body) */
     .typewriter-text {
       visibility: hidden;
     }
@@ -247,13 +257,11 @@
       0%, 100% { opacity: 0; }
       50% { opacity: 1; }
     }
-    /* Mirror mode */
     .mirrored {
       direction: rtl;
       unicode-bidi: bidi-override;
       font-family: monospace;
     }
-    /* Dramatic soundtrack audio hidden */
     #dramaticAudio {display:none;}
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px);}
@@ -439,7 +447,7 @@
           });
           break;
         case 'applause':
-          break; // handled on password success
+          break;
         case 'pirateMode':
           document.getElementById('viewOnlyTitle').textContent = enabled ? "View Only (Arrr!)" : "View Only";
           document.getElementById('editableTitle').textContent = enabled ? "Editable (for Captain Jack G)" : "Editable (only for Jack G)";
@@ -448,7 +456,7 @@
           document.getElementById('settingsBtn').title = enabled ? "Funny Pirate Settings" : "Funny Settings";
           break;
         case 'confetti':
-          break; // handled on button clicks
+          break;
         case 'motivationalQuotes':
           if (enabled) showMotivationalQuote(); else hideMotivationalQuote();
           break;
@@ -504,7 +512,7 @@
           enableLaserPointer(enabled);
           break;
         case 'clownHorn':
-          break; // handled on button clicks
+          break;
         case 'surprisePopup':
           if (enabled) surpriseInterval = setInterval(() => showSurprisePopup(), 6000);
           else clearInterval(surpriseInterval);
@@ -528,7 +536,6 @@
           break;
       }
     }
-    // --- Confetti on every button click if enabled ---
     function throwConfetti(x, y) {
       for (let i = 0; i < 18; i++) {
         const confetti = document.createElement('div');
@@ -541,7 +548,6 @@
         setTimeout(() => confetti.remove(), 1500);
       }
     }
-    // Clown horn
     function playClownHorn() {
       document.getElementById('clownHornAudio').currentTime=0;
       document.getElementById('clownHornAudio').play();
@@ -557,7 +563,6 @@
         }
       });
     });
-    // --- Patch Pirate Mode or Shakespeare ---
     function patchPirateModeDynamic() {
       if (localStorage.getItem('pirateMode') === 'true') {
         document.getElementById('viewOnlyTitle').textContent = "View Only (Arrr!)";
@@ -575,7 +580,6 @@
     }
     document.getElementById('settingsBtn').addEventListener('click', patchPirateModeDynamic);
 
-    // --- Password logic with Applause ---
     let targetUrl = "";
     function showPasswordPrompt(url) {
       targetUrl = url;
@@ -613,7 +617,6 @@
         "Ye have been logged out, matey. Remember Me be off!" :
         "You have been logged out. Remember Me is now off.");
     }
-    // --- Emoji Rain ---
     function emojiRain() {
       const emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
       const div = document.createElement('div');
@@ -624,7 +627,6 @@
       document.body.appendChild(div);
       setTimeout(()=>div.remove(),1500);
     }
-    // --- Meme Overlay ---
     function showMeme() {
       const img = document.createElement('img');
       img.src = memeImages[Math.floor(Math.random()*memeImages.length)];
@@ -634,11 +636,9 @@
       document.body.appendChild(img);
       setTimeout(()=>img.remove(),2200);
     }
-    // --- Surprise Popups ---
     function showSurprisePopup() {
       alert(surpriseFacts[Math.floor(Math.random()*surpriseFacts.length)]);
     }
-    // --- Rickroll Mode ---
     function startRickrollTimer() {
       if (rickrollTimer) return;
       rickrollTimer = setTimeout(() => {
@@ -649,7 +649,6 @@
       if (rickrollTimer) clearTimeout(rickrollTimer);
       rickrollTimer = null;
     }
-    // --- Laser Pointer ---
     function enableLaserPointer(enabled) {
       const laser = document.getElementById('laserPointer');
       laserPointerActive = !!enabled;
@@ -665,9 +664,7 @@
       laser.style.left = (e.pageX-7)+'px';
       laser.style.top = (e.pageY-7)+'px';
     }
-    // --- Typewriter Effect ---
     function typewriterEffect() {
-      // Only type out main sections and titles
       const all = Array.from(document.querySelectorAll('h2,.section'));
       all.forEach(el => {
         if (!el.dataset.originalText) el.dataset.originalText = el.textContent;
