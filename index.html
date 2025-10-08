@@ -64,7 +64,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       z-index: 999;
     }
-    /* Settings modal styles */
     #settingsModal {
       display: none;
       position: fixed;
@@ -76,8 +75,8 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.25);
       padding: 24px 24px 16px 24px;
       z-index: 1000;
-      width: 320px;
-      max-width: 90vw;
+      width: 340px;
+      max-width: 95vw;
       animation: fadeIn 0.2s;
     }
     #settingsModal h3 {
@@ -109,7 +108,6 @@
       cursor: pointer;
       margin-top: 6px;
     }
-    /* Bouncy Button */
     .bouncy {
       animation: bounce 0.4s;
     }
@@ -118,7 +116,6 @@
       40% { transform: translateY(-8px);}
       80% { transform: translateY(0);}
     }
-    /* Confetti styles */
     .confetti {
       position: fixed;
       pointer-events: none;
@@ -135,7 +132,6 @@
         opacity: 0.2;
       }
     }
-    /* Motivational quote */
     #motivationQuote {
       display: none;
       background: #fffae3;
@@ -147,14 +143,118 @@
       font-style: italic;
       border-radius: 8px;
     }
-    /* Disco mode transition */
     .disco-transition {
       transition: background-color 0.2s;
     }
-    @keyframes settingsFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .emojiRain {
+      position: fixed;
+      z-index: 1100;
+      pointer-events: none;
+      font-size: 2rem;
+      animation: emoji-fall 1.3s linear forwards;
     }
+    @keyframes emoji-fall {
+      from {opacity:1;}
+      to {transform: translateY(80vh) rotate(360deg); opacity:0;}
+    }
+    .memePopup {
+      position: fixed;
+      z-index: 1200;
+      pointer-events: none;
+      animation: meme-show 2.2s linear forwards;
+      max-width: 200px;
+      max-height: 150px;
+      opacity: 0.9;
+    }
+    @keyframes meme-show {
+      from {opacity:0;}
+      10% {opacity:1;}
+      90% {opacity:1;}
+      to {opacity:0;}
+    }
+    #laserPointer {
+      display:none;
+      position:fixed;
+      z-index:2000;
+      width:14px;
+      height:14px;
+      background:radial-gradient(circle at 7px 7px, #ff3, #f00 70%, transparent 100%);
+      border-radius:50%;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    #lowBatteryBanner {
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100vw;
+      background:#e74c3c;
+      color:#fff;
+      text-align:center;
+      font-size:18px;
+      font-weight:bold;
+      padding:10px;
+      z-index:2001;
+      letter-spacing:1px;
+      font-family:monospace;
+    }
+    #fakeVirusModal {
+      display:none;
+      position:fixed;
+      top:30%;
+      left:50%;
+      transform:translate(-50%, -30%);
+      background:#fff;
+      border:3px solid #e74c3c;
+      border-radius:16px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);
+      padding:38px 28px 18px 28px;
+      z-index:2100;
+      width:330px;
+      max-width:90vw;
+      text-align:center;
+      font-size:19px;
+      color:#c0392b;
+      font-family:monospace;
+    }
+    #fakeVirusModal button {
+      margin-top:24px;
+      font-size:18px;
+      background:#27ae60;
+      color:#fff;
+      border:none;
+      border-radius:7px;
+      padding:8px 22px;
+      cursor:pointer;
+    }
+    /* Censored mode: blur effect */
+    .censored {
+      filter: blur(4px) brightness(0.8);
+      transition: filter 0.3s;
+    }
+    /* Typewriter effect (applies to body) */
+    .typewriter-text {
+      visibility: hidden;
+    }
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2px;
+      background: #333;
+      animation: blink 0.7s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    /* Mirror mode */
+    .mirrored {
+      direction: rtl;
+      unicode-bidi: bidi-override;
+      font-family: monospace;
+    }
+    /* Dramatic soundtrack audio hidden */
+    #dramaticAudio {display:none;}
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px);}
       to { opacity: 1; transform: translateY(0);}
@@ -163,16 +263,19 @@
 </head>
 <body>
   <div id="motivationQuote"></div>
-
+  <div id="lowBatteryBanner">Low Battery! Please plug in your device!</div>
+  <div id="fakeVirusModal">
+    <div>⚠️ VIRUS DETECTED!<br><br>Your device is infected!<br><br><span style="color:#333;font-size:16px;">Just kidding!</span></div>
+    <button onclick="document.getElementById('fakeVirusModal').style.display='none'">Phew!</button>
+  </div>
+  <div id="laserPointer"></div>
   <button id="logoutBtn" onclick="logout()">Log Out</button>
-
   <div class="section">
     <h2 id="viewOnlyTitle">View Only</h2>
     <button onclick="window.location.href='https://tinyurl.com/6ADassembly'">Script</button>
     <button onclick="window.location.href='https://tinyurl.com/6ADassemblypresentation'">Presentation</button>
     <button onclick="window.location.href='https://www.youtube.com/watch?v=dqpkWsR6Yew'">Harvest Samber</button>
   </div>
-
   <div class="section">
     <h2 id="editableTitle">Editable (only for Jack G)</h2>
     <div>
@@ -188,48 +291,44 @@
       <button onclick="checkPassword()" id="goBtn">Go</button>
     </div>
   </div>
-
   <!-- Settings Button & Modal -->
   <button id="settingsBtn" title="Funny Settings">⚙️</button>
   <div id="settingsModal">
     <h3>Funny Settings</h3>
-    <div class="setting-row">
-      <input type="checkbox" id="comicSansToggle">
-      <label for="comicSansToggle">Comic Sansify</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="discoModeToggle">
-      <label for="discoModeToggle">Disco Mode</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="bouncyButtonsToggle">
-      <label for="bouncyButtonsToggle">Bouncy Buttons</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="applauseToggle">
-      <label for="applauseToggle">Applause on Success</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="pirateModeToggle">
-      <label for="pirateModeToggle">Pirate Mode</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="confettiToggle">
-      <label for="confettiToggle">Celebrate Everything</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="motivationToggle">
-      <label for="motivationToggle">Show Motivational Quotes</label>
-    </div>
+    <div class="setting-row"><input type="checkbox" id="comicSansifyToggle"><label for="comicSansifyToggle">Comic Sansify</label></div>
+    <div class="setting-row"><input type="checkbox" id="discoModeToggle"><label for="discoModeToggle">Disco Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="bouncyButtonsToggle"><label for="bouncyButtonsToggle">Bouncy Buttons</label></div>
+    <div class="setting-row"><input type="checkbox" id="applauseToggle"><label for="applauseToggle">Applause on Success</label></div>
+    <div class="setting-row"><input type="checkbox" id="pirateModeToggle"><label for="pirateModeToggle">Pirate Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="confettiToggle"><label for="confettiToggle">Celebrate Everything</label></div>
+    <div class="setting-row"><input type="checkbox" id="motivationToggle"><label for="motivationToggle">Show Motivational Quotes</label></div>
+    <div class="setting-row"><input type="checkbox" id="upsideDownToggle"><label for="upsideDownToggle">Upside Down Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="typewriterToggle"><label for="typewriterToggle">Typewriter Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="censoredToggle"><label for="censoredToggle">Censored Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="raveModeToggle"><label for="raveModeToggle">Rave Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="dramaticToggle"><label for="dramaticToggle">Dramatic Soundtrack</label></div>
+    <div class="setting-row"><input type="checkbox" id="emojiRainToggle"><label for="emojiRainToggle">Emoji Rain</label></div>
+    <div class="setting-row"><input type="checkbox" id="memeToggle"><label for="memeToggle">Meme Overlay</label></div>
+    <div class="setting-row"><input type="checkbox" id="rickrollToggle"><label for="rickrollToggle">Rickroll Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="mirrorToggle"><label for="mirrorToggle">Mirror Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="laserToggle"><label for="laserToggle">Laser Pointer Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="clownHornToggle"><label for="clownHornToggle">Clown Horn on Click</label></div>
+    <div class="setting-row"><input type="checkbox" id="surprisePopupToggle"><label for="surprisePopupToggle">Surprise Popups</label></div>
+    <div class="setting-row"><input type="checkbox" id="lowBatteryToggle"><label for="lowBatteryToggle">Low Battery Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="shakespeareToggle"><label for="shakespeareToggle">Shakespearean Mode</label></div>
+    <div class="setting-row"><input type="checkbox" id="fakeVirusToggle"><label for="fakeVirusToggle">Fake Virus Warning</label></div>
     <button id="closeSettingsBtn">Close</button>
   </div>
-
   <audio id="applauseAudio" src="https://cdn.jsdelivr.net/gh/peachananr/applause@main/applause.mp3" preload="auto"></audio>
+  <audio id="dramaticAudio" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b78a2e2.mp3" loop preload="auto"></audio>
+  <audio id="clownHornAudio" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b78a2e2.mp3" preload="auto"></audio>
 
   <script>
-    // --- Settings logic ---
+    // --- Funny Settings ---
     const funnySettings = [
-      'comicSansify', 'discoMode', 'bouncyButtons', 'applause', 'pirateMode', 'confetti', 'motivationalQuotes'
+      'comicSansify','discoMode','bouncyButtons','applause','pirateMode','confetti','motivationalQuotes','upsideDownMode',
+      'typewriter','censored','raveMode','dramatic','emojiRain','meme','rickroll','mirror','laser','clownHorn',
+      'surprisePopup','lowBattery','shakespeare','fakeVirus'
     ];
     // Motivational quotes
     const motivationalQuotes = [
@@ -242,35 +341,52 @@
       "Don't watch the clock; do what it does. Keep going.",
       "Dream big and dare to fail."
     ];
-    let discoInterval = null;
+    // Shakespearean phrases
+    const shakespearePhrases = {
+      "Log Out":"Depart hence!",
+      "Go":"Proceed!",
+      "Editable (only for Jack G)":"Editable (for Lord Jack G)",
+      "View Only":"View Only (Forsooth!)"
+    };
+    // Surprise facts
+    const surpriseFacts = [
+      "Did you know: chickens can't taste spicy food!",
+      "Fact: The inventor of the frisbee was turned into a frisbee after he died.",
+      "Random: Cats have fewer toes on their back paws.",
+      "Surprise: The shortest war in history lasted 38 minutes.",
+      "Fun: A group of flamingos is called a 'flamboyance'."
+    ];
+    // Meme images
+    const memeImages = [
+      "https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif",
+      "https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif",
+      "https://i.imgflip.com/30b1gx.jpg",
+      "https://i.kym-cdn.com/entries/icons/facebook/000/000/774/yeah.jpg",
+      "https://media.giphy.com/media/l41lI4bYmcsPJX9Go/giphy.gif"
+    ];
+    // Emojis
+    const emojiList = ["😂","🥳","🎉","🤡","👾","🐔","🍕","🏆","🔥","🚀","🤖","🐙","🦄"];
+    let discoInterval, raveInterval, memeInterval, surpriseInterval, emojiInterval, typewriterTimeout;
+    let laserPointerActive = false;
+    let rickrollTimer = null;
     // --- Settings Modal ---
-    const settingsBtn = document.getElementById('settingsBtn');
-    const settingsModal = document.getElementById('settingsModal');
-    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-    settingsBtn.onclick = () => settingsModal.style.display = 'block';
-    closeSettingsBtn.onclick = () => settingsModal.style.display = 'none';
+    document.getElementById('settingsBtn').onclick = () => document.getElementById('settingsModal').style.display = 'block';
+    document.getElementById('closeSettingsBtn').onclick = () => document.getElementById('settingsModal').style.display = 'none';
     window.onclick = (e) => {
-      if (e.target === settingsModal) settingsModal.style.display = 'none';
+      if (e.target === document.getElementById('settingsModal')) document.getElementById('settingsModal').style.display = 'none';
     };
 
-    // --- Apply settings on load ---
+    // --- Load & Apply on Load ---
     window.onload = function() {
-      // Password logic
-      if (localStorage.getItem('rememberMeJackG')) {
-        document.getElementById('logoutBtn').style.display = 'block';
-      }
-
-      // Load settings from localStorage & apply
+      if (localStorage.getItem('rememberMeJackG')) document.getElementById('logoutBtn').style.display = 'block';
       funnySettings.forEach((setting) => {
         const checked = localStorage.getItem(setting) === 'true';
         const toggle = document.getElementById(setting + 'Toggle');
         if (toggle) toggle.checked = checked;
         applySetting(setting, checked);
       });
-      // Motivational quote
-      if (localStorage.getItem('motivationalQuotes') === 'true') {
-        showMotivationalQuote();
-      }
+      if (localStorage.getItem('motivationalQuotes') === 'true') showMotivationalQuote();
+      if(localStorage.getItem('laser') === 'true') enableLaserPointer(true);
     };
 
     // --- Motivational Quote ---
@@ -282,7 +398,6 @@
     function hideMotivationalQuote() {
       document.getElementById('motivationQuote').style.display = 'none';
     }
-
     // --- Settings Handlers ---
     funnySettings.forEach((setting) => {
       const toggle = document.getElementById(setting + 'Toggle');
@@ -293,6 +408,7 @@
       };
     });
 
+    // --- Setting Effects ---
     function applySetting(setting, enabled) {
       switch (setting) {
         case 'comicSansify':
@@ -311,8 +427,7 @@
           }
           break;
         case 'bouncyButtons':
-          const allButtons = document.querySelectorAll('button');
-          allButtons.forEach(btn => {
+          document.querySelectorAll('button').forEach(btn => {
             if (enabled) {
               btn.onmouseenter = () => btn.classList.add('bouncy');
               btn.onanimationend = () => btn.classList.remove('bouncy');
@@ -324,10 +439,8 @@
           });
           break;
         case 'applause':
-          // No UI change needed, just flag for password success
-          break;
+          break; // handled on password success
         case 'pirateMode':
-          // Change some UI text to pirate
           document.getElementById('viewOnlyTitle').textContent = enabled ? "View Only (Arrr!)" : "View Only";
           document.getElementById('editableTitle').textContent = enabled ? "Editable (for Captain Jack G)" : "Editable (only for Jack G)";
           document.getElementById('logoutBtn').textContent = enabled ? "Abandon Ship" : "Log Out";
@@ -335,15 +448,86 @@
           document.getElementById('settingsBtn').title = enabled ? "Funny Pirate Settings" : "Funny Settings";
           break;
         case 'confetti':
-          // No UI change needed, just flag for button clicks
-          break;
+          break; // handled on button clicks
         case 'motivationalQuotes':
-          if (enabled) showMotivationalQuote();
-          else hideMotivationalQuote();
+          if (enabled) showMotivationalQuote(); else hideMotivationalQuote();
+          break;
+        case 'upsideDownMode':
+          document.body.style.transform = enabled ? 'rotate(180deg)' : '';
+          break;
+        case 'typewriter':
+          if (enabled) typewriterEffect(); else removeTypewriter();
+          break;
+        case 'censored':
+          document.querySelectorAll('h2,.section').forEach(el => {
+            if (enabled) el.classList.add('censored');
+            else el.classList.remove('censored');
+          });
+          break;
+        case 'raveMode':
+          if (enabled) {
+            raveInterval = setInterval(() => {
+              document.body.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+              document.body.style.fontSize = (16 + Math.floor(Math.random()*20)) + 'px';
+              document.querySelectorAll('button').forEach(btn => {
+                btn.style.transform = `translateY(${Math.random()*20-10}px) scale(${1+Math.random()*0.2})`;
+              });
+            }, 100);
+          } else {
+            clearInterval(raveInterval);
+            document.body.style.backgroundColor = '#f4f4f4';
+            document.body.style.fontSize = '';
+            document.querySelectorAll('button').forEach(btn => btn.style.transform = '');
+          }
+          break;
+        case 'dramatic':
+          const dramaticAudio = document.getElementById('dramaticAudio');
+          if (enabled) {dramaticAudio.play();} else {dramaticAudio.pause();dramaticAudio.currentTime=0;}
+          break;
+        case 'emojiRain':
+          if (enabled) emojiInterval = setInterval(() => emojiRain(), 500);
+          else clearInterval(emojiInterval);
+          break;
+        case 'meme':
+          if (enabled) memeInterval = setInterval(() => showMeme(), 3200);
+          else clearInterval(memeInterval);
+          break;
+        case 'rickroll':
+          if (enabled) startRickrollTimer();
+          else clearRickrollTimer();
+          break;
+        case 'mirror':
+          if (enabled) document.body.classList.add('mirrored');
+          else document.body.classList.remove('mirrored');
+          break;
+        case 'laser':
+          enableLaserPointer(enabled);
+          break;
+        case 'clownHorn':
+          break; // handled on button clicks
+        case 'surprisePopup':
+          if (enabled) surpriseInterval = setInterval(() => showSurprisePopup(), 6000);
+          else clearInterval(surpriseInterval);
+          break;
+        case 'lowBattery':
+          document.getElementById('lowBatteryBanner').style.display = enabled ? 'block' : 'none';
+          break;
+        case 'shakespeare':
+          if (enabled) {
+            document.getElementById('logoutBtn').textContent = "Depart hence!";
+            document.getElementById('goBtn').textContent = "Proceed!";
+            document.getElementById('editableTitle').textContent = "Editable (for Lord Jack G)";
+            document.getElementById('viewOnlyTitle').textContent = "View Only (Forsooth!)";
+          } else {
+            patchPirateModeDynamic();
+          }
+          break;
+        case 'fakeVirus':
+          if (enabled) setTimeout(()=>{document.getElementById('fakeVirusModal').style.display='block';},1200);
+          else document.getElementById('fakeVirusModal').style.display='none';
           break;
       }
     }
-
     // --- Confetti on every button click if enabled ---
     function throwConfetti(x, y) {
       for (let i = 0; i < 18; i++) {
@@ -357,16 +541,23 @@
         setTimeout(() => confetti.remove(), 1500);
       }
     }
+    // Clown horn
+    function playClownHorn() {
+      document.getElementById('clownHornAudio').currentTime=0;
+      document.getElementById('clownHornAudio').play();
+    }
     document.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', function(e) {
         if (localStorage.getItem('confetti') === 'true') {
           const rect = btn.getBoundingClientRect();
           throwConfetti(rect.left + rect.width/2, rect.top + rect.height/2);
         }
+        if (localStorage.getItem('clownHorn') === 'true') {
+          playClownHorn();
+        }
       });
     });
-
-    // --- Pirate Mode: also patch other UI elements on dynamic show ---
+    // --- Patch Pirate Mode or Shakespeare ---
     function patchPirateModeDynamic() {
       if (localStorage.getItem('pirateMode') === 'true') {
         document.getElementById('viewOnlyTitle').textContent = "View Only (Arrr!)";
@@ -382,14 +573,12 @@
         document.getElementById('settingsBtn').title = "Funny Settings";
       }
     }
-    // Patch on modal open in case user toggled pirate mode
-    settingsBtn.addEventListener('click', patchPirateModeDynamic);
+    document.getElementById('settingsBtn').addEventListener('click', patchPirateModeDynamic);
 
     // --- Password logic with Applause ---
     let targetUrl = "";
     function showPasswordPrompt(url) {
       targetUrl = url;
-      // If rememberMe is in localStorage, bypass password
       if (localStorage.getItem('rememberMeJackG')) {
         window.location.href = targetUrl;
         return;
@@ -406,7 +595,6 @@
           localStorage.setItem('rememberMeJackG', 'true');
           document.getElementById('logoutBtn').style.display = 'block';
         }
-        // Applause logic
         if (localStorage.getItem('applause') === 'true') {
           const applauseAudio = document.getElementById('applauseAudio');
           applauseAudio.currentTime = 0;
@@ -424,6 +612,96 @@
       alert(localStorage.getItem('pirateMode') === 'true' ?
         "Ye have been logged out, matey. Remember Me be off!" :
         "You have been logged out. Remember Me is now off.");
+    }
+    // --- Emoji Rain ---
+    function emojiRain() {
+      const emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
+      const div = document.createElement('div');
+      div.className = 'emojiRain';
+      div.textContent = emoji;
+      div.style.left = (Math.random()*95)+'vw';
+      div.style.top = '0vh';
+      document.body.appendChild(div);
+      setTimeout(()=>div.remove(),1500);
+    }
+    // --- Meme Overlay ---
+    function showMeme() {
+      const img = document.createElement('img');
+      img.src = memeImages[Math.floor(Math.random()*memeImages.length)];
+      img.className = 'memePopup';
+      img.style.left = (Math.random()*80)+'vw';
+      img.style.top = (10+Math.random()*70)+'vh';
+      document.body.appendChild(img);
+      setTimeout(()=>img.remove(),2200);
+    }
+    // --- Surprise Popups ---
+    function showSurprisePopup() {
+      alert(surpriseFacts[Math.floor(Math.random()*surpriseFacts.length)]);
+    }
+    // --- Rickroll Mode ---
+    function startRickrollTimer() {
+      if (rickrollTimer) return;
+      rickrollTimer = setTimeout(() => {
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      }, 18000 + Math.random()*8000);
+    }
+    function clearRickrollTimer() {
+      if (rickrollTimer) clearTimeout(rickrollTimer);
+      rickrollTimer = null;
+    }
+    // --- Laser Pointer ---
+    function enableLaserPointer(enabled) {
+      const laser = document.getElementById('laserPointer');
+      laserPointerActive = !!enabled;
+      laser.style.display = enabled ? 'block':'none';
+      if (enabled) {
+        document.addEventListener('mousemove', laserMove);
+      } else {
+        document.removeEventListener('mousemove', laserMove);
+      }
+    }
+    function laserMove(e) {
+      const laser = document.getElementById('laserPointer');
+      laser.style.left = (e.pageX-7)+'px';
+      laser.style.top = (e.pageY-7)+'px';
+    }
+    // --- Typewriter Effect ---
+    function typewriterEffect() {
+      // Only type out main sections and titles
+      const all = Array.from(document.querySelectorAll('h2,.section'));
+      all.forEach(el => {
+        if (!el.dataset.originalText) el.dataset.originalText = el.textContent;
+        el.textContent = "";
+        el.classList.add('typewriter-text');
+      });
+      let i=0;
+      function typeNext() {
+        if (i>=all.length) return;
+        const el = all[i];
+        el.style.visibility = 'visible';
+        let txt = el.dataset.originalText;
+        let idx=0;
+        function typeLetter(){
+          if(idx<=txt.length){
+            el.textContent = txt.substr(0,idx) + (idx<txt.length?"|":"");
+            idx++;
+            setTimeout(typeLetter, 26);
+          } else {
+            el.textContent = txt;
+            el.classList.remove('typewriter-text');
+            i++;
+            setTimeout(typeNext, 150);
+          }
+        }
+        typeLetter();
+      }
+      typeNext();
+    }
+    function removeTypewriter() {
+      Array.from(document.querySelectorAll('h2,.section')).forEach(el => {
+        if (el.dataset.originalText) el.textContent = el.dataset.originalText;
+        el.classList.remove('typewriter-text');
+      });
     }
   </script>
 </body>
