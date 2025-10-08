@@ -432,8 +432,11 @@
     // --- Load & Apply on Load ---
     window.onload = function() {
       if (localStorage.getItem('rememberMeJackG')) document.getElementById('logoutBtn').style.display = 'block';
+      // Always default poopMode to off
+      localStorage.removeItem('poopMode');
       funnySettings.forEach((setting) => {
-        const checked = localStorage.getItem(setting) === 'true';
+        // Poop Mode always unchecked on load
+        const checked = (setting === 'poopMode') ? false : (localStorage.getItem(setting) === 'true');
         const toggle = document.getElementById(setting + 'Toggle');
         if (toggle) toggle.checked = checked;
         applySetting(setting, checked);
@@ -455,7 +458,11 @@
     // --- Settings Handlers ---
     // Add 30 more settings to JS array
     [
-      'rainbowText','invertColors','giantCursor','tinyText','randomFont','blurMode','sepiaMode','snow','fireworks','catMode','dogMode','matrix','vaporwave','nyanCat','bananaMode','frogMode','beeMode','alienMode','ghostMode','skeletonMode','pumpkinMode','unicornMode','sharkMode','pizzaMode','burgerMode','donutMode','popcornMode','tacoMode','waffleMode','eggMode','baconMode','cheeseMode','broccoliMode','potatoMode'
+      'rainbowText','invertColors','giantCursor','tinyText','randomFont','blurMode','sepiaMode','snow','fireworks','catMode','dogMode','matrix','vaporwave','nyanCat','bananaMode','frogMode','beeMode','alienMode','ghostMode','skeletonMode','pumpkinMode','unicornMode','sharkMode','pizzaMode','burgerMode','donutMode','popcornMode','tacoMode','waffleMode','eggMode','baconMode','cheeseMode','broccoliMode','potatoMode',
+      // 30 more
+      'hotdogMode','iceCreamMode','cookieMode','carrotMode','lettuceMode','grapeMode','appleMode','pearMode','peachMode','cherryMode',
+      'lemonMode','limeMode','orangeMode','watermelonMode','kiwiMode','pineappleMode','coconutMode','avocadoMode','onionMode','garlicMode',
+      'mushroomMode','cornMode','pumpkinSpiceMode','gingerbreadMode','candyCaneMode','sundaeMode','bubbleTeaMode','ramenMode','sushiMode','bobaMode'
     ].forEach(s => { if (!funnySettings.includes(s)) funnySettings.push(s); });
 
     // Dynamically render settings in columns (10 per column)
