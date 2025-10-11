@@ -343,7 +343,18 @@
         alert("you are so dum");
         return;
       }
-      if (password === "woman123") {
+      // Calculate days since 11 October 2025
+      function daysSinceOct112025() {
+        const startDate = new Date(2025, 9, 11); // Months are 0-indexed
+        const now = new Date();
+        const diffTime = now.getTime() - startDate.getTime();
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      }
+      if (password === "woman123" || password === "women123") {
+        alert("Your password was changed, " + daysSinceOct112025() + " days ago");
+        return;
+      }
+      if (password === "sirpoopoo123") {
         if (rememberMeChecked) {
           localStorage.setItem('rememberMeJackG', 'true');
           document.getElementById('logoutBtn').style.display = 'block';
